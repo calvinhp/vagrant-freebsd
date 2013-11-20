@@ -86,15 +86,8 @@ resolvconf -u
 # CLEANUP
 ################################################################################
 
-# Try to make it even smaller
-while true; do
-    read -p "Would you like me to zero out all data to reduce box size? [y/N] " yn
-    case $yn in
-        [Yy]* ) dd if=/dev/zero of=/tmp/ZEROES bs=1M; break;;
-        [Nn]* ) break;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
+# Remove binary package archives
+rm -rf /var/cache/pkg/*
 
 # Remove the history
 cat /dev/null >/root/.history
@@ -104,6 +97,16 @@ rm -rf /tmp/*
 
 # Truncate log files
 for log in $(find /var/log -type f); do cat /dev/null >$; done
+
+# Try to make it even smaller
+while true; do
+    read -p "Would you like me to zero out all data to reduce box size? [y/N] " yn
+    case $yn in
+        [Yy]* ) dd if=/dev/zero of=/tmp/ZEROES bs=1M; break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 
 # DONE!
 echo "We are all done. Poweroff the box and package it up with Vagrant."
