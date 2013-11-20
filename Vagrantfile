@@ -35,8 +35,10 @@ Vagrant.configure("2") do |config|
    #vb.gui = true
     vb.customize ["modifyvm", :id, "--memory", "256"]
    #vb.customize ["modifyvm", :id, "--cpus", "2"]
-   #vb.customize ["modifyvm", :id, "--ioapic", "on"]
+    vb.customize ["modifyvm", :id, "--ioapic", "on"]
     vb.customize ["modifyvm", :id, "--hwvirtex", "on"]
+    vb.customize ["modifyvm", :id, "--usb", "off"]
+    vb.customize ["modifyvm", :id, "--usbehci", "off"]
     vb.customize ["modifyvm", :id, "--audio", "none"]
     vb.customize ["modifyvm", :id, "--nictype1", "virtio"]
     vb.customize ["modifyvm", :id, "--nictype2", "virtio"]
