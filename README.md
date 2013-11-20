@@ -63,9 +63,7 @@ box, login as root and fetch the installation script:
 
 Run it:
 
-    cd /tmp
-    chmod +x vagrant-setup.sh
-    ./vagrant-setup.sh
+    sh /tmp/vagrant-setup.sh
 
 ### Package for Vagrant
 
