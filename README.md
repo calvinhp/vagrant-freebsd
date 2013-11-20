@@ -1,9 +1,8 @@
 # FreeBSD on Vagrant
 
-<img src="http://www.freebsd.org/layout/images/logo-red.png" align="right" />
-
 I use [FreeBSD] but it's a bit of work to get it running on [Vagrant].
 With this Vagrant box you'll get a FreeBSD 9.2 i386 on UFS in one step.
+<img src="http://www.freebsd.org/layout/images/logo-red.png" float="right" />
 
 **Table of Contents**
 
