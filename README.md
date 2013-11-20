@@ -1,48 +1,39 @@
-# Freebsd on Vagrant
+# FreeBSD on Vagrant
 
-<img src="https://wunki.org/images/freebsd-icon.png" align="right" />
+<img src="http://www.freebsd.org/layout/images/logo-red.png" align="right" />
 
-> Quidquid latine dictum sit, altum viditur.
-> 
-> _(Whatever is said in Latin sounds profound.)_
-
-I love [FreeBSD] but it's a lot of work to get it running correctly on
-[Vagrant]. That's a shame, because more people should experience the quality of
-FreeBSD, the convenience of [jails] and a modern filesystem like [ZFS].
-
-Well, now you can! With this Vagrant box you get a fully tuned, latest FreeBSD
-with ZFS by copying a single file.
+I use [FreeBSD] but it's a bit of work to get it running on [Vagrant].
+With this Vagrant box you'll get a FreeBSD 9.2 i386 on UFS in one step.
 
 **Table of Contents**
 
-- [Freebsd on Vagrant](#freebsd-on-vagrant)
+- [FreeBSD on Vagrant](#freebsd-on-vagrant)
 	- [Quickstart](#quickstart)
 	- [Create your own FreeBSD Box](#create-your-own-freebsd-box)
-		- [Virtualbox Settings](#virtualbox-settings)
-		- [Installation from msfBSD ISO](#installation-from-msfbsd-iso)
+		- [VirtualBox Settings](#virtualbox-settings)
+		- [Installation from FreeBSD ISO](#installation-from-freebsd-iso)
 		- [Configuration](#configuration)
 		- [Package for Vagrant](#package-for-vagrant)
-	- [What's Next?](#what's-next)
 	- [Credits](#credits)
 	- [License](#license)
-    
+
 ## Quickstart
 
 Simply copy the [Vagrantfile] from this repository to the project you want to
 run the VM from and you are done. The box will be downloaded for you.
+The root password is vagrant.
 
 ## Create your own FreeBSD Box
 
 This is for people who want to have their own customized box, instead of the
 box I made for you with the scripts in this repository.
 
-The FreeBSD boxse are build from the excellent [mfsBSD] site, namely the
-[9.2-RELEASE-amd64 special edition] ISO's. Download this ISO and create a new
-virtual machine.
+The FreeBSD box is built from the stock FreeBSD ISO image, namely the
+[9.2-RELEASE-i386] disc1 ISO. Download this ISO and create a new virtual machine.
 
-### Virtualbox Settings
+### VirtualBox Settings
 
-Your virtualbox works best with the following settings:
+VirtualBox works best with the following settings:
 
 - System -> Motherboard -> **Hardware clock in UTC time**
 - System -> Acceleration -> **VT/x/AMD-V**
@@ -55,35 +46,20 @@ Your virtualbox works best with the following settings:
 I would also recommend to disable all the things you are not using, such as
 *audio* and *usb*.
 
-### Installation from msfBSD ISO
+### Installation from FreeBSD ISO
 
-Attach the ISO as a CD and boot it. You can login with `root` and password
-`mfsroot`. After logging in, start the base installation with:
-
-    mount_cd9660 /dev/cd0 /cdrom
-    zfsinstall -d /dev/ada0 -u /cdrom/9.2-RELEAE-amd64 -s 1G
-
-When the installation is done, you can `poweroff` and **remove the CD from
-boot order in the settings.**
+Attach the ISO as a CD and boot it. Default installation should work.
+Select UTC when asked for timezone and machine hardware clock.
+In network configuration step select vtnet0 and configure it with IPv4 DHCP.
 
 ### Configuration
 
 Boot into your clean FreeBSD installation. You can now run the
 `vagrant-installation.sh` script from this repository. This will install and
-setup everything which is needed for Vagrant to run. First, login as root (no
-password required).
+setup everything which is needed for Vagrant to run. First, in your FreeBSD
+box, login as root and fetch the installation script:
 
-Select your keyboard:
-
-    kbdmap
-
-Get an IP adress:
-
-    dhclient vtnet0
-
-In your FreeBSD box, fetch the installation script:
-
-    fetch -o /tmp/vagrant-setup.sh https://raw.github.com/wunki/vagrant-freebsd/master/bin/vagrant-setup.sh
+    fetch -o /tmp/vagrant-setup.sh https://raw.github.com/arkadijs/vagrant-freebsd/master/bin/vagrant-setup.sh
 
 Run it:
 
@@ -102,13 +78,9 @@ You can now package the box by running the following on your local machine:
 
     vagrant package --base <name-of-your-virtual-machine> --output <name-of-your-box>
 
-## What's Next?
-
-You can find the TODO's in the [TODO.org] at the root of this repository.
-
 ## Credits
 
-I got lots of useful configuration from [xironix freebsd] builds. 
+I forked this repository from [wunki freebsd].
 
 ## License
 
@@ -118,10 +90,6 @@ any improvements back to this repository.
 
 [FreeBSD]: http://www.freebsd.org/
 [Vagrant]: http://www.vagrantup.com/
-[jails]: http://www.freebsd.org/doc/handbook/jails.html
-[ZFS]: http://en.wikipedia.org/wiki/ZFS
-[Vagrantfile]: https://github.com/wunki/vagrant-freebsd/blob/master/Vagrantfile
-[mfsBSD]: http://mfsbsd.vx.sk/
-[9.2-RELEASE-amd64 special edition]: http://mfsbsd.vx.sk/
-[TODO.org]: https://github.com/wunki/vagrant-freebsd/blob/master/TODO.org
-[xironix freebsd]: https://github.com/xironix/freebsd-vagrant
+[Vagrantfile]: https://github.com/arkadijs/vagrant-freebsd/blob/master/Vagrantfile
+[9.2-RELEASE-i386]: http://ftp.freebsd.org/pub/FreeBSD/releases/ISO-IMAGES/9.2/FreeBSD-9.2-RELEASE-i386-disc1.iso
+[wunki freebsd]: https://github.com/wunki/vagrant-freebsd
