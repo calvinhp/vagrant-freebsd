@@ -7,20 +7,18 @@ set -e
 ################################################################################
 
 # Packages which are pre-installed
-INSTALLED_PACKAGES="virtualbox-ose-additions python27 bash nano sudo"
-# Python 2.7 is installed for for Ansible.
+INSTALLED_PACKAGES="virtualbox-ose-additions bash sudo"
 # If you want really minimal box - remove virtualbox-ose-additions as it
 # pulls in X server and libraries, and also Python.
 
 # Configuration files
-MAKE_CONF="https://raw.github.com/arkadijs/vagrant-freebsd/master/etc/make.conf"
-RC_CONF="https://raw.github.com/arkadijs/vagrant-freebsd/master/etc/rc.conf"
-RESOLVCONF_CONF="https://raw.github.com/arkadijs/vagrant-freebsd/master/etc/resolvconf.conf"
-LOADER_CONF="https://raw.github.com/arkadijs/vagrant-freebsd/master/boot/loader.conf"
-PKG_REPOS_CONF="https://raw.github.com/arkadijs/vagrant-freebsd/master/etc/pkg_repos.conf"
+MAKE_CONF="https://raw.github.com/calvinhp/vagrant-freebsd/master/etc/make.conf"
+RC_CONF="https://raw.github.com/calvinhp/vagrant-freebsd/master/etc/rc.conf"
+LOADER_CONF="https://raw.github.com/calvinhp/vagrant-freebsd/master/boot/loader.conf"
+PKG_REPOS_CONF="https://raw.github.com/calvinhp/vagrant-freebsd/master/etc/pkg_repos.conf"
 
 # Message of the day
-MOTD="https://raw.github.com/arkadijs/vagrant-freebsd/master/etc/motd"
+MOTD="https://raw.github.com/calvinhp/vagrant-freebsd/master/etc/motd"
 
 # Private key of Vagrant (you probable don't want to change this)
 VAGRANT_PUBLIC_KEY="https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub"
@@ -76,11 +74,8 @@ fetch -o /home/vagrant/.ssh/authorized_keys $VAGRANT_PUBLIC_KEY
 chown -R vagrant:vagrant /home/vagrant/.ssh
 
 fetch -o /etc/rc.conf $RC_CONF
-fetch -o /etc/resolvconf.conf $RESOLVCONF_CONF
 fetch -o /boot/loader.conf $LOADER_CONF
 fetch -o /etc/motd $MOTD
-
-resolvconf -u
 
 ################################################################################
 # CLEANUP

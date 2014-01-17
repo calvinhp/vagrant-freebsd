@@ -2,39 +2,29 @@
 
 Vagrant.configure("2") do |config|
   config.vm.guest = :freebsd
-  config.vm.box = "freebsd-9.2-i386"
-  config.vm.box_url = "http://iris.hosting.lv/freebsd-9.2-i386.box"
+  config.vm.box = "freebsd-9.2"
+  config.vm.box_url = "http://localhost/calvin/freebsd-9.2.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network :forwarded_port, guest:  80, host: 9080, auto_correct: true
-  config.vm.network :forwarded_port, guest: 443, host: 9443, auto_correct: true
+  #config.vm.network :forwarded_port, guest:  80, host: 9080, auto_correct: true
+  #config.vm.network :forwarded_port, guest: 443, host: 9443, auto_correct: true
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network :private_network, ip: "192.168.33.10"
+  config.vm.network "private_network", ip: "10.0.1.10"
 
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network :public_network
+  # Use NFS as a shared folder
+  config.vm.synced_folder ".", "/vagrant", :nfs => true, id: "vagrant-root"
 
-  # If true, then any SSH connections made will enable agent forwarding.
-  # Default value: false
-  # config.ssh.forward_agent = true
-
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder ".", "/vagrant", nfs: true
+  ## For masterless, mount your file roots file root
+  config.vm.synced_folder "salt/roots/salt", "/usr/local/etc/salt/states", :nfs => true, id: "salt-root-states"
+  config.vm.synced_folder "salt/roots/pillar", "/usr/local/etc/salt/pillar", :nfs => true, id: "salt-root-pillar"
 
   config.vm.provider :virtualbox do |vb|
-   #vb.gui = true
-    vb.customize ["modifyvm", :id, "--memory", "256"]
-   #vb.customize ["modifyvm", :id, "--cpus", "2"]
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
     vb.customize ["modifyvm", :id, "--ioapic", "on"]
     vb.customize ["modifyvm", :id, "--hwvirtex", "on"]
     vb.customize ["modifyvm", :id, "--usb", "off"]
@@ -44,11 +34,15 @@ Vagrant.configure("2") do |config|
     vb.customize ["modifyvm", :id, "--nictype2", "virtio"]
   end
 
-  # config.vm.provision :shell, :path => "bootstrap.sh"
-  # config.vm.provision "ansible" do |ansible|
-  #   ansible.playbook = "playbook.yml"
-  #   ansible.host_key_checking = false
-  #  #ansible.verbose = 'vvvv'
-  # end
+  ## Set your salt configs here
+  config.vm.provision :salt do |salt|
+    salt.verbose = true
+
+    ## Minion config is set to ``file_client: local`` for masterless
+    salt.minion_config = "salt/minion"
+
+    ## Installs our example formula in "salt/roots/salt"
+    salt.run_highstate = true
+  end
 
 end
