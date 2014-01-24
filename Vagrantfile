@@ -1,9 +1,9 @@
 # -*- mode: ruby; -*-
 
 Vagrant.configure("2") do |config|
-  config.vm.guest = :freebsd
-  config.vm.box = "freebsd-9.2"
-  config.vm.box_url = "http://localhost/calvin/freebsd-9.2.box"
+  config.vm.guest = :freebsd64
+  config.vm.box = "vagrant-freebsd-10"
+  config.vm.box_url = "http://localhost/calvin/vagrant-freebsd-10.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,

@@ -7,7 +7,7 @@ set -e
 ################################################################################
 
 # Packages which are pre-installed
-INSTALLED_PACKAGES="bash zsh sudo py27-salt"
+INSTALLED_PACKAGES="bash zsh sudo py27-salt ca_root_nss"
 # If you want really minimal box - remove virtualbox-ose-additions as it
 # pulls in X server and libraries, and also Python.
 
@@ -49,6 +49,8 @@ pkg update
 pkg upgrade -y
 # Install required packages
 pkg install -y $INSTALLED_PACKAGES
+# Install our VBox additions with no X11 deps
+pkg install -r sixfeetup virtualbox-ose-additions
 
 ################################################################################
 # Configuration
@@ -70,7 +72,10 @@ chown -R vagrant:vagrant /home/vagrant/.ssh
 
 fetch --no-verify-peer -o /etc/rc.conf $RC_CONF
 fetch --no-verify-peer -o /boot/loader.conf $LOADER_CONF
-fetch  --no-verify-peer-o /etc/motd $MOTD
+fetch --no-verify-peer -o /etc/motd $MOTD
+
+# Symlink the root CAs to /etc/ssl/cert.pem so we can use fetch
+ln -s /usr/local/share/certs/ca-root-nss.crt /etc/ssl/cert.pem
 
 ################################################################################
 # CLEANUP
