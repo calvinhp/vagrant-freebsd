@@ -7,7 +7,7 @@ set -e
 ################################################################################
 
 # Packages which are pre-installed
-INSTALLED_PACKAGES="virtualbox-ose-additions bash sudo"
+INSTALLED_PACKAGES="bash zsh sudo py27-salt"
 # If you want really minimal box - remove virtualbox-ose-additions as it
 # pulls in X server and libraries, and also Python.
 
@@ -27,29 +27,24 @@ VAGRANT_PUBLIC_KEY="https://raw.github.com/mitchellh/vagrant/master/keys/vagrant
 # SYSTEM UPDATE
 ################################################################################
 
-sed 's/\[ ! -t 0 \]/false/' /usr/sbin/freebsd-update >/tmp/freebsd-update
-chmod +x /tmp/freebsd-update
-PAGER=/bin/cat /tmp/freebsd-update fetch
-PAGER=/bin/cat sh -c '/tmp/freebsd-update install || exit 0'
-rm /tmp/freebsd-update
+#sed 's/\[ ! -t 0 \]/false/' /usr/sbin/freebsd-update >/tmp/freebsd-update
+#chmod +x /tmp/freebsd-update
+PAGER=/bin/cat freebsd-update fetch
+PAGER=/bin/cat sh -c 'freebsd-update install || exit 0'
+#rm /tmp/freebsd-update
 
 ################################################################################
 # PACKAGE INSTALLATION
 ################################################################################
 
-# Install the pkg management tool
-pkg_add -r pkg
-
 # make.conf
 fetch -o /etc/make.conf $MAKE_CONF
 
-# convert pkg
-pkg2ng
-
 # Setup pkgng
-rm -rf /usr/local/etc/pkg*
+#rm -rf /usr/local/etc/pkg*
 mkdir -p /usr/local/etc/pkg/repos
-fetch -o /usr/local/etc/pkg/repos/FreeBSD.conf $PKG_REPOS_CONF
+fetch -o /usr/local/etc/pkg/repos/vagrant_repos.conf $PKG_REPOS_CONF
+ASSUME_ALWAYS_YES=YES pkg bootstrap
 pkg update
 pkg upgrade -y
 # Install required packages
