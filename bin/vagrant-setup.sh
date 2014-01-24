@@ -41,9 +41,11 @@ PAGER=/bin/cat sh -c 'freebsd-update install || exit 0'
 fetch --no-verify-peer -o /etc/make.conf $MAKE_CONF
 
 # Setup pkgng
-#rm -rf /usr/local/etc/pkg*
+# pkgng has a sample conf file, salt needs it to detect we are using pkgng
+cp /usr/local/etc/pkg.conf.sample /usr/local/etc/pkg.conf
 mkdir -p /usr/local/etc/pkg/repos
 fetch --no-verify-peer -o /usr/local/etc/pkg/repos/vagrant_repos.conf $PKG_REPOS_CONF
+# bootstrap latest pkgng without pkg_ tools that aren't in FreeBSD >= 10
 ASSUME_ALWAYS_YES=YES pkg bootstrap
 pkg update
 pkg upgrade -y
