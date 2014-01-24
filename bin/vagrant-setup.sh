@@ -38,12 +38,12 @@ PAGER=/bin/cat sh -c 'freebsd-update install || exit 0'
 ################################################################################
 
 # make.conf
-fetch -o /etc/make.conf $MAKE_CONF
+fetch --no-verify-peer -o /etc/make.conf $MAKE_CONF
 
 # Setup pkgng
 #rm -rf /usr/local/etc/pkg*
 mkdir -p /usr/local/etc/pkg/repos
-fetch -o /usr/local/etc/pkg/repos/vagrant_repos.conf $PKG_REPOS_CONF
+fetch --no-verify-peer -o /usr/local/etc/pkg/repos/vagrant_repos.conf $PKG_REPOS_CONF
 ASSUME_ALWAYS_YES=YES pkg bootstrap
 pkg update
 pkg upgrade -y
@@ -65,12 +65,12 @@ echo "%vagrant ALL=(ALL) NOPASSWD: ALL" >> /usr/local/etc/sudoers
 # Authorize vagrant to login without a key
 mkdir -p /home/vagrant/.ssh
 # Get the public key and save it in the `authorized_keys`
-fetch -o /home/vagrant/.ssh/authorized_keys $VAGRANT_PUBLIC_KEY
+fetch --no-verify-peer -o /home/vagrant/.ssh/authorized_keys $VAGRANT_PUBLIC_KEY
 chown -R vagrant:vagrant /home/vagrant/.ssh
 
-fetch -o /etc/rc.conf $RC_CONF
-fetch -o /boot/loader.conf $LOADER_CONF
-fetch -o /etc/motd $MOTD
+fetch --no-verify-peer -o /etc/rc.conf $RC_CONF
+fetch --no-verify-peer -o /boot/loader.conf $LOADER_CONF
+fetch  --no-verify-peer-o /etc/motd $MOTD
 
 ################################################################################
 # CLEANUP
