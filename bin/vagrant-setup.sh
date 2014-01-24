@@ -50,7 +50,7 @@ pkg upgrade -y
 # Install required packages
 pkg install -y $INSTALLED_PACKAGES
 # Install our VBox additions with no X11 deps
-pkg install -r sixfeetup virtualbox-ose-additions
+pkg install -y -r sixfeetup virtualbox-ose-additions
 
 ################################################################################
 # Configuration
