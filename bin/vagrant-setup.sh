@@ -7,7 +7,7 @@ set -e
 ################################################################################
 
 # Packages which are pre-installed
-INSTALLED_PACKAGES="bash zsh sudo py27-salt ca_root_nss"
+INSTALLED_PACKAGES="bash zsh sudo ca_root_nss"
 # If you want really minimal box - remove virtualbox-ose-additions as it
 # pulls in X server and libraries, and also Python.
 
@@ -41,12 +41,12 @@ PAGER=/bin/cat sh -c 'freebsd-update install || exit 0'
 fetch --no-verify-peer -o /etc/make.conf $MAKE_CONF
 
 # Setup pkgng
-# pkgng has a sample conf file, salt needs it to detect we are using pkgng
-cp /usr/local/etc/pkg.conf.sample /usr/local/etc/pkg.conf
 mkdir -p /usr/local/etc/pkg/repos
 fetch --no-verify-peer -o /usr/local/etc/pkg/repos/vagrant_repos.conf $PKG_REPOS_CONF
 # bootstrap latest pkgng without pkg_ tools that aren't in FreeBSD >= 10
 ASSUME_ALWAYS_YES=YES pkg bootstrap
+# pkgng has a sample conf file, salt needs it to detect we are using pkgng
+cp /usr/local/etc/pkg.conf.sample /usr/local/etc/pkg.conf
 pkg update
 pkg upgrade -y
 # Install required packages
