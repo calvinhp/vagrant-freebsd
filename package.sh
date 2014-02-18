@@ -1,3 +1,3 @@
 #!/bin/sh
-VBoxManage modifyvdi $HOME/'VirtualBox VMs/FreeBSD 9.2/FreeBSD 9.2'.vdi compact
-vagrant package --base 'FreeBSD 9.2' --output freebsd-9.2.box
+VBoxManage modifyvdi $HOME/'VirtualBox VMs/vagrant-freebsd-10/vagrant-freebsd-10'.vdi compact
+vagrant package --base 'vagrant-freebsd-10' --output vagrant-freebsd-10.box
